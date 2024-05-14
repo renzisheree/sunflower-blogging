@@ -1,20 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Label } from "../components/label";
 import { Input } from "components/input";
 import { useForm } from "react-hook-form";
+import Field from "components/field/Field";
+import { IconEyeClose, IconEyeOpen } from "components/icon";
+import { Button } from "components/button";
 
 const SignUpPageStyles = styled.div`
   min-height: 100vh;
   padding: 40px;
   .logo {
     margin: 0 auto;
-  }
-  .field {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    row-gap: 20px;
   }
 
   .form {
@@ -31,6 +28,7 @@ const SignUpPage = () => {
   const handleSignUp = (values) => {
     console.log(values);
   };
+  const [tooglePassword, setTooglePassword] = useState(false);
   return (
     <SignUpPageStyles>
       <div className="container">
@@ -40,7 +38,7 @@ const SignUpPage = () => {
           className="logo"
         />
         <form className="form" onSubmit={handleSubmit(handleSignUp)}>
-          <div className="field">
+          <Field>
             <Label htmlFor="fullname">Full Name</Label>
             <Input
               name="fullname"
@@ -49,7 +47,42 @@ const SignUpPage = () => {
               placeholder="Enter your fullname"
               control={control}
             ></Input>
-          </div>
+          </Field>{" "}
+          <Field>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              name="email"
+              type="email"
+              className="input"
+              placeholder="Enter your email"
+              control={control}
+            ></Input>
+          </Field>{" "}
+          <Field>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              name="password"
+              type={tooglePassword ? "text" : "password"}
+              className="input"
+              placeholder="Enter your password"
+              control={control}
+            >
+              {!tooglePassword ? (
+                <IconEyeClose
+                  onClick={() => {
+                    setTooglePassword(!tooglePassword);
+                  }}
+                ></IconEyeClose>
+              ) : (
+                <IconEyeOpen
+                  onClick={() => {
+                    setTooglePassword(!tooglePassword);
+                  }}
+                ></IconEyeOpen>
+              )}
+            </Input>
+          </Field>
+          <Button type="submit">Sign up</Button>
         </form>
       </div>
     </SignUpPageStyles>
