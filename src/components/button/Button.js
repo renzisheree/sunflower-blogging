@@ -1,3 +1,4 @@
+import { LoadingSpinner } from "components/Loading";
 import React from "react";
 import styled from "styled-components";
 
@@ -7,10 +8,14 @@ const ButtonStyles = styled.button`
   line-height: 1;
   color: white;
   font-weight: 600;
-
-  border-radius: 8px;
   font-size: 18px;
   width: 100%;
+  height: ${(props) => props.height || "66px"};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+
   background-image: linear-gradient(
     to right bottom,
     ${(props) => props.theme.primary},
@@ -27,9 +32,11 @@ const Button = ({
   onClick = () => {},
   ...props
 }) => {
+  const { isLoading } = props;
+  const child = !!isLoading ? <LoadingSpinner></LoadingSpinner> : "Sign up";
   return (
     <ButtonStyles type={type} onClick={onClick} {...props}>
-      {children}
+      {child}
     </ButtonStyles>
   );
 };
