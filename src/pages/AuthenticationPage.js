@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 const AuthPageStyles = styled.div`
@@ -26,11 +27,13 @@ const AuthenticationPage = ({ children }) => {
     <AuthPageStyles>
       {" "}
       <div className="container">
-        <img
-          srcSet="/sunflower.png 2x"
-          alt="sunflower blogging logo"
-          className="logo"
-        />
+        <NavLink to={"/"}>
+          <img
+            srcSet="/sunflower.png 2x"
+            alt="sunflower blogging logo"
+            className="logo"
+          />
+        </NavLink>
         {children}
       </div>
     </AuthPageStyles>

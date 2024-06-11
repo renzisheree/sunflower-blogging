@@ -5,6 +5,7 @@
 }
 * {
   margin: 0;
+  padding: 0;
 }
 
 html,
@@ -50,9 +51,12 @@ h6 {
 }
 body {
   font-family: "Poppins", sans-serif;
-  font-size: 16;
+  font-size: 16px;
 }
 a {
   text-decoration: none;
   color: inherit;
+}
+.text-primary {
+  color: #fae033;
 }

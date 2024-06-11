@@ -97,7 +97,9 @@ const SignInPage = () => {
           disabled={isSubmitting}
           isLoading={isSubmitting}
           style={{ width: 300, margin: "0 auto" }}
-        ></Button>
+        >
+          Sign In
+        </Button>
       </form>
     </AuthenticationPage>
   );
