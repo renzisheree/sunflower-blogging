@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PostCategory from "./PostCategory";
 const PostFeatureItemStyles = styled.div`
   width: 100%;
   border-radius: 16px;
@@ -90,7 +91,7 @@ const PostFeatureItem = () => {
       <div className="post-overlay"></div>
       <div className="post-content">
         <div className="post-top">
-          <span className="post-category">Kiến thức</span>
+          <PostCategory>Kiến thức</PostCategory>
           <div className="post-info">
             <span className="post-time">Mar 23</span>
             <span className="post-dot"></span>
