@@ -93,10 +93,11 @@ const SignInPage = () => {
           <NavLink to={"/sign-up"}>Register now</NavLink>
         </div>
         <Button
+          kind="primary"
           type="submit"
           disabled={isSubmitting}
           isLoading={isSubmitting}
-          style={{ width: 300, margin: "0 auto" }}
+          style={{ maxWidth: 300, margin: "0 auto" }}
         >
           Sign In
         </Button>

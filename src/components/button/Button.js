@@ -1,7 +1,7 @@
 import { LoadingSpinner } from "components/Loading";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const ButtonStyles = styled.button`
   cursor: pointer;
@@ -17,11 +17,23 @@ const ButtonStyles = styled.button`
   align-items: center;
   border-radius: 8px;
 
-  background-image: linear-gradient(
-    to right bottom,
-    ${(props) => props.theme.primary},
-    ${(props) => props.theme.secondary}
-  );
+  ${(props) =>
+    props.kind == "secondary" &&
+    css`
+      background-color: white;
+      color: ${(props) => props.theme.primary};
+    `};
+  ${(props) =>
+    props.kind == "primary" &&
+    css`
+      color: white;
+      background-image: linear-gradient(
+        to right bottom,
+        ${(props) => props.theme.primary},
+        ${(props) => props.theme.secondary}
+      );
+    `};
+
   &:disabled {
     opacity: 0.5;
     pointer-events: none;
@@ -31,21 +43,22 @@ const Button = ({
   type = "button",
   children,
   onClick = () => {},
+  kind = "primary",
   ...props
 }) => {
   const { isLoading, to } = props;
   const child = !!isLoading ? <LoadingSpinner></LoadingSpinner> : children;
   if (to !== "" && typeof to == "string") {
     return (
-      <NavLink to={to}>
-        <ButtonStyles type={type} {...props}>
+      <NavLink style={{ display: "inline-block" }} to={to}>
+        <ButtonStyles kind={kind} type={type} {...props}>
           {child}
         </ButtonStyles>
       </NavLink>
     );
   }
   return (
-    <ButtonStyles type={type} onClick={onClick} {...props}>
+    <ButtonStyles kind={kind} type={type} onClick={onClick} {...props}>
       {child}
     </ButtonStyles>
   );
