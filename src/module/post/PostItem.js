@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import PostCategory from "./PostCategory";
 import PostTitle from "./PostTitle";
+import PostMeta from "./PostMeta";
 const PostItemStyles = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,13 +32,7 @@ const PostItemStyles = styled.div`
       color: #6b6b6b;
       margin-top: auto;
     }
-    &-dot {
-      display: inline-block;
-      width: 4px;
-      height: 4px;
-      background-color: currentColor;
-      border-radius: 100rem;
-    }
+
     &-title {
       margin-bottom: 8px;
     }
@@ -58,11 +53,7 @@ const PostItem = () => {
         {" "}
         Hướng dẫn setup phòng cực chill dành cho người mới toàn tập
       </PostTitle>
-      <div className="post-info">
-        <span className="post-time">Mar 23</span>
-        <span className="post-dot"></span>
-        <span className="post-author">Andiez Le</span>
-      </div>
+      <PostMeta></PostMeta>
     </PostItemStyles>
   );
 };
