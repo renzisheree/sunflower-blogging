@@ -37,7 +37,6 @@ const SignUpPage = () => {
   } = useForm({ mode: "onChange", resolver: yupResolver(schemas) });
   const handleSignUp = async (values) => {
     if (!isValid) return;
-    console.log(values);
     const user = await createUserWithEmailAndPassword(
       auth,
       values.email,

@@ -71,7 +71,6 @@ const menuLink = [
 ];
 const Header = () => {
   const { userInfo } = useAuth();
-  console.log(userInfo);
   return (
     <HeaderStyles>
       <div className="container">

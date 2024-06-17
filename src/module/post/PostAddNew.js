@@ -72,10 +72,10 @@ const PostAddNew = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userInfo.email]);
   const addPostHandler = async (values) => {
-    if (userInfo?.role !== userRole.ADMIN) {
-      Swal.fire("Failed", "You have no right to do this action", "warning");
-      return;
-    }
+    // if (userInfo?.role !== userRole.ADMIN) {
+    //   Swal.fire("Failed", "You have no right to do this action", "warning");
+    //   return;
+    // }
     setLoading(true);
     try {
       const cloneValues = { ...values };
@@ -109,6 +109,7 @@ const PostAddNew = () => {
   useEffect(() => {
     async function getData() {
       const colRef = collection(db, "categories");
+
       const q = query(colRef, where("status", "==", 1));
       const querySnapshot = await getDocs(q);
       let result = [];
@@ -124,7 +125,7 @@ const PostAddNew = () => {
   }, []);
 
   useEffect(() => {
-    document.title = "Monkey Blogging - Add new post";
+    document.title = "Sunflower Blogging - Add new post";
   }, []);
 
   const handleClickOption = async (item) => {
@@ -195,14 +196,14 @@ const PostAddNew = () => {
           </Field>
         </div>
         <div className="form-layout">
-          <Field>
+          <Field className="flex">
             <Label>Feature post</Label>
             <Toggle
               on={watchHot === true}
               onClick={() => setValue("hot", !watchHot)}
             ></Toggle>
           </Field>
-          <Field>
+          <Field className="">
             <Label>Status</Label>
             <FieldCheckboxes>
               <Radio
