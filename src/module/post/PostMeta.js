@@ -25,7 +25,7 @@ const PostMetaStyles = styled.div`
 
 const PostMeta = ({
   date = "Mar 23",
-  authorName = "Andiez Le",
+  authorName = "",
   className = "",
   to = "",
 }) => {

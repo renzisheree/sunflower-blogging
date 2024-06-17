@@ -60,17 +60,20 @@ const PostAddNew = () => {
         collection(db, "users"),
         where("email", "==", userInfo.email)
       );
+
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        setValue("user", {
-          id: doc.id,
-          ...doc.data(),
-        });
+        if (doc.data()) {
+          setValue("user", {
+            id: doc.id,
+            ...doc.data(),
+          });
+        }
       });
     }
     fetchUserData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userInfo.email]);
+  }, [userInfo]);
   const addPostHandler = async (values) => {
     // if (userInfo?.role !== userRole.ADMIN) {
     //   Swal.fire("Failed", "You have no right to do this action", "warning");

@@ -45,7 +45,12 @@ const HomeBanner = () => {
               tempore accusantium, fuga explicabo minus obcaecati consequuntur
               tempora eum quae error aliquam enim! Adipisci, aliquid repellat!
             </p>
-            <Button style={{ maxWidth: 300 }} kind="secondary" to="sign-up">
+            <Button
+              type="button"
+              style={{ maxWidth: 300 }}
+              kind="secondary"
+              to="sign-up"
+            >
               Lẹcc gô
             </Button>
           </div>
