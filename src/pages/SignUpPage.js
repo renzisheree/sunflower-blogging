@@ -1,111 +1,122 @@
-import React, { useEffect, useState } from "react";
-import { Label } from "../components/label";
-import { Input } from "components/input";
-import { useForm } from "react-hook-form";
-import Field from "components/field/Field";
-import { Button } from "components/button";
+import slugify from "slugify";
+import React, { useEffect } from "react";
+import InputPasswordToggle from "components/input/InputPasswordToggle";
+import AuthenticationPage from "./AuthenticationPage";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db } from "firebase-app/firebase-config";
 import { NavLink, useNavigate } from "react-router-dom";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
-import PropsType from "prop-types";
-import AuthenticationPage from "./AuthenticationPage";
-import InputPasswordToggle from "components/input/InputPasswordToggle";
+import { Label } from "components/label";
+import { Input } from "components/input";
+import { Field } from "components/field";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { Button } from "components/button";
+import { auth, db } from "firebase-app/firebase-config";
+import { userRole, userStatus } from "utils/constants";
 
-const schemas = yup.object({
-  fullname: yup.string().required("Please enter your full name"),
+const schema = yup.object({
+  fullname: yup.string().required("Please enter your fullname"),
   email: yup
     .string()
-    .email("Please enter valid email")
-    .required("Please enter your email"),
+    .email("Please enter valid email address")
+    .required("Please enter your email address"),
   password: yup
     .string()
-    .min(8, "Must have at least 8 characters or greater")
+    .min(8, "Your password must be at least 8 characters or greater")
     .required("Please enter your password"),
 });
+
 const SignUpPage = () => {
   const navigate = useNavigate();
   const {
     control,
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
-    watch,
-    reset,
-  } = useForm({ mode: "onChange", resolver: yupResolver(schemas) });
+  } = useForm({
+    mode: "onChange",
+    resolver: yupResolver(schema),
+  });
   const handleSignUp = async (values) => {
     if (!isValid) return;
-    const user = await createUserWithEmailAndPassword(
-      auth,
-      values.email,
-      values.password
-    );
-    await updateProfile(auth.currentUser, { displayName: values.fullname });
+    await createUserWithEmailAndPassword(auth, values.email, values.password);
+    await updateProfile(auth.currentUser, {
+      displayName: values.fullname,
+      photoURL:
+        "https://images.unsplash.com/photo-1490750967868-88aa4486c946?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+    });
 
     await setDoc(doc(db, "users", auth.currentUser.uid), {
       fullname: values.fullname,
       email: values.email,
       password: values.password,
+      username: slugify(values.fullname, { lower: true }),
+      avatar:
+        "https://images.unsplash.com/photo-1490750967868-88aa4486c946?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+      status: userStatus.ACTIVE,
+      role: userRole.USER,
+      createdAt: serverTimestamp(),
     });
 
-    toast.success("Register successfully");
+    toast.success("Register successfully!!!");
     navigate("/");
   };
   useEffect(() => {
-    const arrayErrors = Object.values(errors);
-    if (arrayErrors.length > 0) {
-      toast.error(arrayErrors[0]?.message, { pauseOnHover: false, delay: 0 });
+    const arrErroes = Object.values(errors);
+    if (arrErroes.length > 0) {
+      toast.error(arrErroes[0]?.message, {
+        pauseOnHover: false,
+        delay: 0,
+      });
     }
   }, [errors]);
   useEffect(() => {
     document.title = "Register Page";
-  });
+  }, []);
   return (
     <AuthenticationPage>
-      <form className="form" onSubmit={handleSubmit(handleSignUp)}>
+      <form
+        className="form"
+        onSubmit={handleSubmit(handleSignUp)}
+        autoComplete="off"
+      >
         <Field>
-          <Label htmlFor="fullname">Full Name</Label>
+          <Label htmlFor="fullname">Fullname</Label>
           <Input
-            name="fullname"
             type="text"
-            className="input"
+            name="fullname"
             placeholder="Enter your fullname"
             control={control}
-          ></Input>
-        </Field>{" "}
+          />
+        </Field>
         <Field>
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">Email address</Label>
           <Input
-            name="email"
             type="email"
-            className="input"
+            name="email"
             placeholder="Enter your email"
             control={control}
-          ></Input>
-        </Field>{" "}
+          />
+        </Field>
         <Field>
           <Label htmlFor="password">Password</Label>
           <InputPasswordToggle control={control}></InputPasswordToggle>
         </Field>
         <div className="have-account">
-          You already have account? <NavLink to={"/sign-in"}>Login</NavLink>
+          You already have an account? <NavLink to={"/sign-in"}>Login</NavLink>{" "}
         </div>
         <Button
-          kind="primary"
           type="submit"
-          disabled={isSubmitting}
+          className="w-full max-w-[300px] mx-auto"
           isLoading={isSubmitting}
-          style={{ width: "100%", maxWidth: 300, margin: "0 auto" }}
+          disabled={isSubmitting}
         >
-          Sign up
+          Sign Up
         </Button>
       </form>
     </AuthenticationPage>
   );
 };
-Button.propTypes = {
-  type: PropsType.string.isRequired,
-};
+
 export default SignUpPage;

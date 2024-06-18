@@ -13,6 +13,7 @@ import { Button } from "components/button";
 import { IconEyeClose, IconEyeOpen } from "components/icon";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "firebase-app/firebase-config";
+import InputPasswordToggle from "components/input/InputPasswordToggle";
 const schemas = yup.object({
   email: yup
     .string()
@@ -65,28 +66,8 @@ const SignInPage = () => {
           ></Input>
         </Field>{" "}
         <Field>
-          <Label htmlfor="password">Email address</Label>
-          <Input
-            type="password"
-            name="password"
-            placeholder="Enter your password "
-            control={control}
-          >
-            {" "}
-            {!tooglePassword ? (
-              <IconEyeClose
-                onClick={() => {
-                  setTooglePassword(!tooglePassword);
-                }}
-              ></IconEyeClose>
-            ) : (
-              <IconEyeOpen
-                onClick={() => {
-                  setTooglePassword(!tooglePassword);
-                }}
-              ></IconEyeOpen>
-            )}
-          </Input>
+          <Label htmlfor="password">Password</Label>
+          <InputPasswordToggle control={control}></InputPasswordToggle>
         </Field>
         <div className="have-account">
           You have not had an account?{" "}
