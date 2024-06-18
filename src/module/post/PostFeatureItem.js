@@ -76,16 +76,21 @@ const PostFeatureItem = ({ data }) => {
   //   const queries = query(colRef, where("id", "==", data.categoryId));
   // }, [data.categoryId]);
   if (!data || !data.id) return null;
-
+  const date = new Date(data?.createdAt?.seconds * 1000);
+  const formatDate = data?.createdAt.second
+    ? new Date(date).toLocaleDateString("vi-VI")
+    : "";
   return (
     <PostFeatureItemStyles>
       <PostImage url={data.image}></PostImage>
       <div className="post-overlay"></div>
       <div className="post-content">
         <div className="post-top">
-          <PostCategory>{data.category.name}</PostCategory>
+          <PostCategory to={data.category.slug}>
+            {data.category.name}
+          </PostCategory>
           <PostMeta
-            date={data?.createAt}
+            date={formatDate}
             authorName={data.user.fullname}
           ></PostMeta>
         </div>
