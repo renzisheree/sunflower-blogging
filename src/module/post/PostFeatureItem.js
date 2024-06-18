@@ -94,7 +94,7 @@ const PostFeatureItem = ({ data }) => {
             authorName={data.user.fullname}
           ></PostMeta>
         </div>
-        <PostTitle date size="big">
+        <PostTitle to={data.slug} date size="big">
           {data.title}
         </PostTitle>
       </div>

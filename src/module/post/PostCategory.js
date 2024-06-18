@@ -33,7 +33,7 @@ const PostCategory = ({
 }) => {
   return (
     <PostCategoryStyles type={type} className={className}>
-      <NavLink to={to}>{children}</NavLink>
+      <NavLink to={`/category/${to}`}>{children}</NavLink>
     </PostCategoryStyles>
   );
 };
