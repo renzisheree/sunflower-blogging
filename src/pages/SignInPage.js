@@ -1,83 +1,63 @@
 import { useAuth } from "contexts/auth-context";
-import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthenticationPage from "./AuthenticationPage";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { Field } from "components/field";
 import { Label } from "components/label";
 import { Input } from "components/input";
 import { Button } from "components/button";
-import { IconEyeClose, IconEyeOpen } from "components/icon";
+import InputPasswordToggle from "components/input/InputPasswordToggle";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "firebase-app/firebase-config";
-import InputPasswordToggle from "components/input/InputPasswordToggle";
-const schemas = yup.object({
-  email: yup
-    .string()
-    .email("Please enter valid email")
-    .required("Please enter your email"),
-  password: yup
-    .string()
-    .min(8, "Must have at least 8 characters or greater")
-    .required("Please enter your password"),
-});
+import { userRole } from "utils/constants";
+
 const SignInPage = () => {
-  const [tooglePassword, setTooglePassword] = useState(false);
-  const {
-    handleSubmit,
-    control,
-    formState: { isValid, isSubmitting, errors },
-  } = useForm({
+  const { handleSubmit, control } = useForm({
     mode: "onChange",
-    resolver: yupResolver(schemas),
   });
-  useEffect(() => {
-    const arrayErrors = Object.values(errors);
-    if (arrayErrors.length > 0) {
-      toast.error(arrayErrors[0]?.message, { pauseOnHover: false, delay: 0 });
-    }
-  }, [errors]);
   const navigate = useNavigate();
   const { userInfo } = useAuth();
 
   useEffect(() => {
     document.title = "Login Page";
-    if (userInfo?.email) navigate("/");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userInfo]);
+
+    if (userInfo && userInfo.role) {
+      if (userInfo.role === userRole.ADMIN) {
+        navigate("/dashboard");
+      } else {
+        navigate("/");
+      }
+    }
+  }, [userInfo, navigate, userRole.ADMIN]);
+
   const handleSignIn = async (values) => {
-    if (!isValid) return;
-    await signInWithEmailAndPassword(auth, values.email, values.password);
-    navigate("/");
+    try {
+      await signInWithEmailAndPassword(auth, values.email, values.password);
+    } catch (error) {
+      console.error("Error signing in:", error);
+    }
   };
+
   return (
     <AuthenticationPage>
       <form className="form" onSubmit={handleSubmit(handleSignIn)}>
         <Field>
-          <Label htmlfor="email">Email address</Label>
+          <Label htmlFor="email">Email address</Label>
           <Input
             type="email"
             name="email"
             placeholder="Enter your email address"
             control={control}
-          ></Input>
-        </Field>{" "}
-        <Field>
-          <Label htmlfor="password">Password</Label>
-          <InputPasswordToggle control={control}></InputPasswordToggle>
+          />
         </Field>
-        <div className="have-account">
-          You have not had an account?{" "}
-          <NavLink to={"/sign-up"}>Register now</NavLink>
-        </div>
+        <Field>
+          <Label htmlFor="password">Password</Label>
+          <InputPasswordToggle control={control} />
+        </Field>
         <Button
           kind="primary"
           type="submit"
-          disabled={isSubmitting}
-          isLoading={isSubmitting}
           style={{ maxWidth: 300, margin: "0 auto" }}
         >
           Sign In
