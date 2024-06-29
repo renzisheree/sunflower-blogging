@@ -136,10 +136,10 @@ const Header = () => {
               style={{ maxWidth: "200px" }}
               height="56px"
               className="header-button"
-              to="/sign-up"
+              to="/sign-in"
               type="button"
             >
-              Sign up
+              Sign In
             </Button>
           ) : (
             <div className="header-auth">

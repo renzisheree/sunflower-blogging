@@ -1,6 +1,6 @@
 import { useAuth } from "contexts/auth-context";
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AuthenticationPage from "./AuthenticationPage";
 import { useForm } from "react-hook-form";
 import { Field } from "components/field";
@@ -55,6 +55,10 @@ const SignInPage = () => {
           <Label htmlFor="password">Password</Label>
           <InputPasswordToggle control={control} />
         </Field>
+        <div className="have-account">
+          You already have an account?{" "}
+          <NavLink to={"/sign-up"}>Sign up</NavLink>{" "}
+        </div>
         <Button
           kind="primary"
           type="submit"
